@@ -7,6 +7,9 @@ Tested on OpenStack Kilo
 
 Any improvements are welcome, feel free to create a pull request.
 
+## Status
+[![Build Status](https://travis-ci.org/crystone/openstack-monitoring.svg?branch=master)](https://travis-ci.org/crystone/openstack-monitoring)
+
 ## Requirements
 See requirements.txt for pip requirements, use 'pip install -r requirements.txt' to install requirements using pip.
 
