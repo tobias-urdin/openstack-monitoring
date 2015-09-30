@@ -68,7 +68,7 @@ class Pep8Command(Command):
             sys.exit(1)
 
         cwd = os.getcwd()
-        retcode = call(('pep8 %s/openstack-monitoring/ %s/test/' %
+        retcode = call(('pep8 %s/openstack_monitoring/ %s/test/' %
                         (cwd, cwd)).split(' '))
 
         sys.exit(retcode)
@@ -97,9 +97,9 @@ setup(name='openstack-monitoring',
       author='Crystone Sverige AB',
       author_email='support@crystone.se',
       license='GNU GPL 2',
-      packages=['openstack-monitoring'],
+      packages=['openstack_monitoring'],
       package_dir={
-          'openstack-monitoring': 'openstack-monitoring',
+          'openstack_monitoring': 'openstack_monitoring',
       },
       url='https://github.com/crystone/openstack-monitoring',
       cmdclass={
