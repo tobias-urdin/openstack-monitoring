@@ -40,7 +40,7 @@ parser.add_argument('--project', metavar='project', type=str,
                     required=True, help='Keystone project')
 parser.add_argument('--region', metavar='region', type=str,
                     required=True, help='Region')
-parser.add_argument('--nova_url', metavar='http://controller:8776/v2',
+parser.add_argument('--nova_url', metavar='http://controller:8774/v2',
                     type=str, required=False, help='Nova endpoint')
 parser.add_argument('--insecure', action='store_false', dest='verify',
                     required=False, help='Disable SSL')
@@ -75,7 +75,7 @@ if nova is None:
 flavors = nova.get_flavors()
 
 if flavors is None:
-    print 'CRITICAL: Did not get any flavor data'
+    print 'CRITICAL: Did not get any flavors data'
     sys.exit(STATE_CRITICAL)
 
 if 'flavors' in flavors:

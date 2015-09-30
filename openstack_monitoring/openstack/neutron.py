@@ -30,7 +30,7 @@ class NeutronClient(object):
             raise Exception('KeystoneClient is invalid, cannot continue')
 
         if neutron_url is not None:
-            self.neutron_url = neutron_url + '/' + keystone.get_project_id()
+            self.neutron_url = neutron_url
         else:
             self.neutron_url = (keystone.get_endpoint_url('network') +
                                 self.neutron_endpoint_version)
