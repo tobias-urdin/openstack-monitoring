@@ -90,7 +90,7 @@ class KeystoneClient(object):
 
     def get_endpoint_url(self, service_type):
         if self.catalog is None:
-            return False
+            return None
 
         for service in self.catalog:
             if service['type'] == service_type:
@@ -124,6 +124,6 @@ class KeystoneClient(object):
             self.catalog = None
             return
 
-            self.token = response['access']['token']['id']
-            self.projectid = response['access']['token']['tenant']['id']
-            self.catalog = response['access']['serviceCatalog']
+        self.token = response['access']['token']['id']
+        self.projectid = response['access']['token']['tenant']['id']
+        self.catalog = response['access']['serviceCatalog']
