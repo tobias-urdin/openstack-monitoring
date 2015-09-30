@@ -74,6 +74,10 @@ if ceilometer is None:
 
 alarms = ceilometer.get_alarms()
 
+if alarms is None:
+    print 'CRITICAL: Did not get any alarms data'
+    sys.exit(STATE_CRITICAL)
+
 count = len(alarms)
 
 if count >= 0:

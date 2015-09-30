@@ -74,6 +74,10 @@ if neutron is None:
 
 networks = neutron.get_networks()
 
+if networks is None:
+    print 'CRITICAL: Did not get any networks data'
+    sys.exit(STATE_CRITICAL)
+
 if 'networks' in networks:
     count = len(networks['networks'])
 

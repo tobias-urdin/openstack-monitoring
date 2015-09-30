@@ -74,6 +74,10 @@ if glance is None:
 
 images = glance.get_images()
 
+if images is None:
+    print 'CRITICAL: Did not get any images data'
+    sys.exit(STATE_CRITICAL)
+
 if 'images' in images:
     count = len(images['images'])
 

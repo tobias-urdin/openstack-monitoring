@@ -74,6 +74,10 @@ if cinder is None:
 
 volumes = cinder.get_volumes()
 
+if volumes is None:
+    print 'CRITICAL: Did not get any volumes data'
+    sys.exit(STATE_CRITICAL)
+
 if 'volumes' in volumes:
     count = len(volumes['volumes'])
 
