@@ -85,11 +85,22 @@ class CoverageCommand(Command):
         pass
 
     def run(self):
-        status = self._run_tests()
-        sys.exit(status)
+        try:
+           import coverage
+        except ImportError:
+            print('Missing "coverage" library. You can install it using pip:'
+                  'pip install coverage')
+            sys.exit(1)
 
-    def _run_tests(self):
-        print "hello world"
+        cover = coverage.coverage(config_file='.coveragerc')
+        cover.start()
+
+        tc = TestCommand(self.distribution)
+        tc._run_tests()
+
+        cover.stop()
+        cover.save()
+        cover.html_report()
 
 setup(name='openstack-monitoring',
       version='1.0',
