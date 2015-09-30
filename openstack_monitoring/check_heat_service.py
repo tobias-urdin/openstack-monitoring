@@ -65,7 +65,12 @@ if keystone.valid() is False:
     print 'CRITICAL: Keystone context is invalid'
     sys.exit(STATE_CRITICAL)
 
-heat = HeatClient(keystone)
+heat_url = None
+
+if args.heat_url is not None:
+    heat_url = args.heat_url
+
+heat = HeatClient(keystone, heat_url)
 
 if heat is None:
     print 'CRITICAL: Could not create heat context'

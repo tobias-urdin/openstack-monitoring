@@ -61,13 +61,22 @@ if keystone.valid() is False:
     print 'CRITICAL: Keystone context is invalid'
     sys.exit(STATE_CRITICAL)
 
-nova = NovaClient(keystone)
+nova_url = None
+
+if args.nova_url is not None:
+    nova_url = args.nova_url
+
+nova = NovaClient(keystone, nova_url)
 
 if nova is None:
     print 'CRITICAL: Could not create nova context'
     sys.exit(STATE_CRITICAL)
 
 flavors = nova.get_flavors()
+
+if flavors is None:
+    print 'CRITICAL: Did not get any flavor data'
+    sys.exit(STATE_CRITICAL)
 
 if 'flavors' in flavors:
     count = len(flavors['flavors'])

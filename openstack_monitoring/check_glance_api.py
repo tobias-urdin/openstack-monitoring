@@ -61,7 +61,12 @@ if keystone.valid() is False:
     print 'CRITICAL: Keystone context is invalid'
     sys.exit(STATE_CRITICAL)
 
-glance = GlanceClient(keystone)
+glance_url = None
+
+if args.glance_url is not None:
+    glance_url = args.glance_url
+
+glance = GlanceClient(keystone, glance_url)
 
 if glance is None:
     print 'CRITICAL: Could not create glance context'

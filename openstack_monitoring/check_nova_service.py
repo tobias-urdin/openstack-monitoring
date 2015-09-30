@@ -65,7 +65,12 @@ if keystone.valid() is False:
     print 'CRITICAL: Keystone context is invalid'
     sys.exit(STATE_CRITICAL)
 
-nova = NovaClient(keystone)
+nova_url = None
+
+if args.nova_url is not None:
+    nova_url = args.nova_url
+
+nova = NovaClient(keystone, nova_url)
 
 if nova is None:
     print 'CRITICAL: Could not create nova context'

@@ -61,7 +61,12 @@ if keystone.valid() is False:
     print 'CRITICAL: Keystone context is invalid'
     sys.exit(STATE_CRITICAL)
 
-neutron = NeutronClient(keystone)
+neutron_url = None
+
+if args.neutron_url is not None:
+    neutron_url = args.neutron_url
+
+neutron = NeutronClient(keystone, neutron_url)
 
 if neutron is None:
     print 'CRITICAL: Could not create neutron context'

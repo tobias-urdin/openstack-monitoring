@@ -61,7 +61,12 @@ if keystone.valid() is False:
     print 'CRITICAL: Keystone context is invalid'
     sys.exit(STATE_CRITICAL)
 
-cinder = CinderClient(keystone)
+cinder_url = None
+
+if args.cinder_url is not None:
+    cinder_url = args.cinder_url
+
+cinder = CinderClient(keystone, cinder_url)
 
 if cinder is None:
     print 'CRITICAL: Could not create cinder context'

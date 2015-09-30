@@ -61,7 +61,12 @@ if keystone.valid() is False:
     print 'CRITICAL: Keystone context is invalid'
     sys.exit(STATE_CRITICAL)
 
-ceilometer = CeilometerClient(keystone)
+ceilometer_url = None
+
+if args.ceilometer_url is not None:
+    ceilometer_url = args.ceilometer_url
+
+ceilometer = CeilometerClient(keystone, ceilometer_url)
 
 if ceilometer is None:
     print 'CRITICAL: Could not create ceilometer context'
