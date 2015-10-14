@@ -89,14 +89,30 @@ if type(service) is not list:
 
 final_status_code = STATE_OK
 
+total_ok = 0
+total_critical = 0
+
+data = []
+
 for s in service:
     status = 'CRITICAL'
 
     if s['status'] == 'up':
         status = 'OK'
+        total_ok = total_ok + 1
     else:
         final_status_code = STATE_CRITICAL
+        total_critical = total_critical + 1
 
-    print '%s: %s %s on %s' % (status, s['binary'], s['engine_id'], s['host'])
+    text = '%s: %s %s on %s' % (status, s['binary'], s['engine_id'], s['host'])
+    data.append(text)
+
+if total_critical >= 1:
+    print 'CRITICAL: %s heat-engine is critical' % (total_critical)
+else:
+    print 'OK: %s heat-engine os ok' % (total_ok)
+
+for d in data:
+    print d
 
 sys.exit(final_status_code)
