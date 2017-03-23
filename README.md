@@ -3,7 +3,7 @@ Python based monitoring checks for Nagios and all it's forks.
 
 Provides checks for API and service statuses.
 
-Tested on OpenStack Kilo
+Tested on OpenStack Liberty
 
 Any improvements are welcome, feel free to create a pull request.
 

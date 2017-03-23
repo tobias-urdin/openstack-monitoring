@@ -110,7 +110,7 @@ for s in service:
 if total_critical >= 1:
     print 'CRITICAL: %s heat-engine is critical' % (total_critical)
 else:
-    print 'OK: %s heat-engine os ok' % (total_ok)
+    print 'OK: %s heat-engine is ok' % (total_ok)
 
 for d in data:
     print d

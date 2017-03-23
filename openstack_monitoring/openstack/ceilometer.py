@@ -60,3 +60,27 @@ class CeilometerClient(object):
             return None
 
         return None
+
+    def get_events(self, token=None):
+        auth_token = token
+
+        try:
+            if auth_token is None:
+                auth_token = self.keystone.get_token()
+        except Exception as e:
+            return None
+
+        headers = {
+            'content-type': 'application/json',
+            'X-Auth-Token': auth_token
+        }
+
+        try:
+            response = requests.get(self.ceilometer_url + '/events',
+                                    headers=headers,
+                                    verify=self.ssl).json()
+            return response
+        except Exception as e:
+            return None
+
+        return None

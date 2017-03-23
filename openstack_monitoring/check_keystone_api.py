@@ -67,7 +67,7 @@ if token is None:
                                                 args.username, args.project)
     sys.exit(STATE_CRITICAL)
 
-print ('OK: Successfully created token %s region %s '
-       'user %s in project %s') % (token, keystone.get_region(),
+print ('OK: Successfully created token - region %s '
+       'user %s in project %s') % (keystone.get_region(),
                                    args.username, args.project)
 sys.exit(STATE_OK)

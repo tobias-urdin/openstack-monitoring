@@ -37,6 +37,30 @@ class NeutronClient(object):
 
         self.ssl = ssl
 
+    def get_floatingips(self, token=None):
+        auth_token = None
+
+        try:
+            if auth_token is None:
+                auth_token = self.keystone.get_token()
+        except Exception as e:
+            return None
+
+        headers = {
+            'content-type': 'application/json',
+            'X-Auth-Token': auth_token
+        }
+
+        try:
+            response = requests.get(self.neutron_url + '/floatingips',
+                                    headers=headers,
+                                    verify=self.ssl).json()
+            return response
+        except Exception as e:
+            return None
+
+        return None
+
     def get_networks(self, token=None):
         auth_token = token
 

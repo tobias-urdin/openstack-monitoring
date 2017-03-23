@@ -72,21 +72,21 @@ if neutron is None:
     print 'CRITICAL: Could not create neutron context'
     sys.exit(STATE_CRITICAL)
 
-networks = neutron.get_networks()
+floatingips = neutron.get_floatingips()
 
-if networks is None:
-    print 'CRITICAL: Did not get any networks data'
+if floatingips is None:
+    print 'CRITICAL: Did not get any floating ips'
     sys.exit(STATE_CRITICAL)
 
-if 'networks' in networks:
-    count = len(networks['networks'])
+if 'floatingips' in floatingips:
+    count = len(floatingips['floatingips'])
 
     if count > 0:
-        print 'OK: Found %s networks' % (count)
+        print 'OK: Found %s floating ips' % (count)
         sys.exit(STATE_OK)
     else:
-        print 'CRITICAL: Did not find any networks'
+        print 'CRITICAL: Did not find any floating ips'
         sys.exit(STATE_CRITICAL)
 
-print 'CRITICAL: Could not retrieve neutron networks'
+print 'CRITICAL: Could not retrieve neutron floating ips'
 sys.exit(STATE_CRITICAL)

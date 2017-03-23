@@ -72,17 +72,17 @@ if ceilometer is None:
     print 'CRITICAL: Could not create ceilometer context'
     sys.exit(STATE_CRITICAL)
 
-alarms = ceilometer.get_alarms()
+events = ceilometer.get_events()
 
-if alarms is None:
-    print 'CRITICAL: Did not get any alarms data'
+if events is None:
+    print 'CRITICAL: Did not get any events data'
     sys.exit(STATE_CRITICAL)
 
-count = len(alarms)
+count = len(events)
 
 if count >= 0:
-    print 'OK: Found %s alarms' % (count)
+    print 'OK: Found %s events' % (count)
     sys.exit(STATE_OK)
 
-print 'CRITICAL: Could not retrieve ceilometer alarms'
+print 'CRITICAL: Could not retrieve ceilometer events'
 sys.exit(STATE_CRITICAL)
