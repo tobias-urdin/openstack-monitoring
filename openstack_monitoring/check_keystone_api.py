@@ -55,8 +55,8 @@ if keystone is None:
     sys.exit(STATE_CRITICAL)
 
 if keystone.valid() is False:
-    print 'CRITICAL: Keystone failed to create token region %s user %s in'
-    'project %s' % (keystone.get_region(), args.username, args.project)
+    print ('CRITICAL: Keystone failed to create token region %s user %s in '
+    'project %s') % (keystone.get_region(), args.username, args.project)
     sys.exit(STATE_CRITICAL)
 
 token = keystone.get_token()

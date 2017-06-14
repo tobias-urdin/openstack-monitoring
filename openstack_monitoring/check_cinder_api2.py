@@ -75,7 +75,7 @@ if cinder is None:
 availabilityzones = cinder.get_availability_zones()
 
 if availabilityzones is None:
-    print 'CRITICAL: Did not get any availabilityzones data'
+    print 'CRITICAL: Did not get any availability zones data'
     sys.exit(STATE_CRITICAL)
 
 if 'availabilityZoneInfo' in availabilityzones:
