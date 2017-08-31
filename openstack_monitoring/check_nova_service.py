@@ -91,14 +91,15 @@ if service['status'] == 'enabled':
         status = 'OK'
         status_code = STATE_OK
 
-        print ('%s: %s on %s is enabled with '
-               'state %s') % (status, service['binary'],
-                              service['host'], service['state'])
-        sys.exit(status_code)
+    print ('%s: %s on %s is enabled with '
+           'state %s') % (status, service['binary'],
+                          service['host'], service['state'])
+    sys.exit(status_code)
 else:
         print ('WARNING: %s on %s is disabled with '
                'state %s') % (service['binary'], service['host'],
                               service['state'])
         sys.exit(STATE_WARNING)
 
+print ('CRITICAL: Invalid service state for %s on %s' % (args.binary, args.host))
 sys.exit(STATE_CRITICAL)

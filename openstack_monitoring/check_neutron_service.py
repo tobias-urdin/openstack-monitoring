@@ -101,4 +101,5 @@ else:
            'state %s') % (agent['binary'], agent['host'], state)
     sys.exit(STATE_WARNING)
 
+print ('CRITICAL: Invalid service state for %s on %s' % (args.binary, args.host))
 sys.exit(STATE_CRITICAL)
