@@ -36,6 +36,8 @@ parser.add_argument('--username', metavar='username', type=str,
                     required=True, help='Keystone username')
 parser.add_argument('--password', metavar='password', type=str,
                     required=True, help='Keystone password')
+parser.add_argument('--domain', metavar='domain', type=str,
+                    default='default', help='Keystone domain')
 parser.add_argument('--project', metavar='project', type=str,
                     required=True, help='Keystone project')
 parser.add_argument('--region', metavar='region', type=str,
@@ -54,7 +56,7 @@ parser.add_argument('--binary', metavar='binary', type=str, required=True,
 args = parser.parse_args()
 
 keystone = KeystoneClient(args.auth_url, args.username, args.password,
-                          args.project, args.verify,
+                          args.domain, args.project, args.verify,
                           args.region, args.endpoint)
 
 if keystone is None:

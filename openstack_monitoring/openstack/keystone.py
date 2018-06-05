@@ -22,8 +22,8 @@ import requests
 import json
 
 
-class TokenRequest(object):
-    def __init__(self, username, password, project):
+class TokenRequestV2(object):
+    def __init__(self, username, password, domain, project):
         self.auth = {
             "tenantName": project,
             "passwordCredentials": {
@@ -36,12 +36,41 @@ class TokenRequest(object):
         return json.dumps(self.__dict__)
 
 
+class TokenRequestV3(object):
+    def __init__(self, username, password, domain, project=None):
+        self.auth = {
+          "identity": {
+            "methods": ["password"],
+            "password": {
+              "user": {
+                "name": username,
+                "domain": { "id": domain },
+                "password": password
+              }
+            }
+          }
+        }
+
+        # Dont need scoped tokens for now
+        #if project is not None:
+        #    self.auth['scope'] = {
+        #        "project": {
+        #          "id": project
+        #        }
+        #    }
+
+    def get_data(self):
+        return json.dumps(self.__dict__)
+
+
+
 class KeystoneClient(object):
-    def __init__(self, auth_url, username, password, project, ssl=False,
-                 region='regionOne', endpoint='internalURL'):
+    def __init__(self, auth_url, username, password, domain='default', project=None,
+                 ssl=False, region='regionOne', endpoint='internalURL'):
         self.auth_url = auth_url
         self.username = username
         self.password = password
+        self.domain = domain
         self.project = project
 
         if ssl is not None:
@@ -70,9 +99,14 @@ class KeystoneClient(object):
         self.create_token()
 
     def valid(self):
-        if (self.token is None or self.projectid is None
-           or self.catalog is None):
-            return False
+        if 'v2.0' in self.auth_url:
+            if (self.token is None or self.projectid is None
+               or self.catalog is None):
+                return False
+        elif 'v3' in self.auth_url:
+            if (self.token is None or self.domain is None
+               or self.catalog is None):
+                return False
 
         return True
 
@@ -96,34 +130,58 @@ class KeystoneClient(object):
             if service['type'] == service_type:
                 if self.region is not False:
                     for regionurls in service['endpoints']:
-                        if regionurls['region'] == self.region:
-                            return regionurls[self.endpoint]
+                        if 'v3' in self.auth_url:
+                            if regionurls['interface'] == self.endpoint:
+                                return regionurls['url']
                         else:
-                            return service['endpoints'][0][self.endpoint]
+                            if regionurls['region'].lower() == self.region.lower():
+                                return regionurls[self.endpoint]
+                            else:
+                                return service['endpoints'][0][self.endpoint]
 
         return None
 
     def create_token(self):
-        tokenreq = TokenRequest(self.username, self.password, self.project)
+        tokenreq = None
+        if 'v3' in self.auth_url:
+            tokenreq = TokenRequestV3(self.username, self.password, self.domain, self.project)
+            url = self.auth_url + '/auth/tokens'
+        else:
+            tokenreq = TokenRequestV2(self.username, self.password, self.domain, self.project)
+            url = self.auth_url + '/tokens'
+
         request = tokenreq.get_data()
 
         try:
-            response = requests.post(self.auth_url + '/tokens',
-                                     data=request,
-                                     headers=self.headers,
-                                     verify=self.ssl).json()
+            result = requests.post(url,
+                                   data=request,
+                                   headers=self.headers,
+                                   verify=self.ssl)
+            response = result.json()
         except Exception as e:
             self.token = None
             self.projectid = None
             self.catalog = None
             return
 
-        if not response['access']['token']['id']:
-            self.token = None
-            self.projectid = None
-            self.catalog = None
-            return
+        if 'v2.0' in self.auth_url:
+            if not response['access']['token']['id']:
+                self.token = None
+                self.projectid = None
+                self.catalog = None
+                return
 
-        self.token = response['access']['token']['id']
-        self.projectid = response['access']['token']['tenant']['id']
-        self.catalog = response['access']['serviceCatalog']
+            self.token = response['access']['token']['id']
+            self.projectid = response['access']['token']['tenant']['id']
+            self.catalog = response['access']['serviceCatalog']
+
+        if 'v3' in self.auth_url:
+            if 'X-Subject-Token' not in result.headers or not result.headers['X-Subject-Token']:
+                self.token = None
+                self.projectid = None
+                self.catalog = None
+                return
+
+            self.catalog = response['token']['catalog']
+            self.token = result.headers['X-Subject-Token']
+            self.projectid = response['token']['project']['id']

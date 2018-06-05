@@ -10,6 +10,18 @@ Any improvements are welcome, feel free to create a pull request.
 ## Status
 [![Build Status](https://travis-ci.org/crystone/openstack-monitoring.svg?branch=master)](https://travis-ci.org/crystone/openstack-monitoring)
 
+## Example usage
+
+Supports both keystone v2.0 and v3 auth, it's selected based on the --auth_url parameter.
+
+`python check_keystone_api.py --auth_url http://10.0.0.10:5000/v2.0 --username myuser --password mypass --project myproject --region myregion`
+
+`python check_keystone_api.py --auth_url http://10.0.0.10:5000/v3 --username myuser --password mypass --domain default --project myproject --region myregion`
+
+Domain defaults to `default` and region defaults to `regionOne` all other is mandatory. For keystone v3 the `--project` parameter is required but not used because it does not create a scoped token.
+
+The same principle applies for all other checks.
+
 ## Requirements
 See requirements.txt for pip requirements, use 'pip install -r requirements.txt' to install requirements using pip.
 

@@ -35,6 +35,8 @@ parser.add_argument('--username', metavar='username', type=str,
                     required=True, help='Keystone username')
 parser.add_argument('--password', metavar='password', type=str,
                     required=True, help='Keystone password')
+parser.add_argument('--domain', metavar='domain', type=str,
+                    default='default', help='Keystone domain')
 parser.add_argument('--project', metavar='project', type=str,
                     required=True, help='Keystone project')
 parser.add_argument('--region', metavar='region', type=str,
@@ -47,7 +49,7 @@ parser.add_argument('--endpoint', metavar='publicURL', type=str,
 args = parser.parse_args()
 
 keystone = KeystoneClient(args.auth_url, args.username, args.password,
-                          args.project, args.verify,
+                          args.domain, args.project, args.verify,
                           args.region, args.endpoint)
 
 if keystone is None:
@@ -55,19 +57,19 @@ if keystone is None:
     sys.exit(STATE_CRITICAL)
 
 if keystone.valid() is False:
-    print ('CRITICAL: Keystone failed to create token region %s user %s in '
-    'project %s') % (keystone.get_region(), args.username, args.project)
+    print ('CRITICAL: Keystone failed to create token domain %s region %s user %s in '
+    'project %s') % (args.domain, keystone.get_region(), args.username, args.project)
     sys.exit(STATE_CRITICAL)
 
 token = keystone.get_token()
 
 if token is None:
     print ('CRITICAL: Could not get token for '
-           'region %s user % in project %s') % (keystone.get_region(),
+           'domain %s region %s user % in project %s') % (args.domain, keystone.get_region(),
                                                 args.username, args.project)
     sys.exit(STATE_CRITICAL)
 
-print ('OK: Successfully created token - region %s '
-       'user %s in project %s') % (keystone.get_region(),
+print ('OK: Successfully created token - domain %s region %s '
+       'user %s in project %s') % (args.domain, keystone.get_region(),
                                    args.username, args.project)
 sys.exit(STATE_OK)
