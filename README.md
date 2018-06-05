@@ -10,6 +10,7 @@ Any improvements are welcome, feel free to create a pull request.
 Currently in-use on:
 
 * Mitaka
+* Ocata
 
 Was used before on (not currently tested but might work):
 
@@ -34,13 +35,24 @@ The default `--endpoint` type is set to *public* to support newer OpenStack vers
 The same principle applies for all other checks.
 
 ## Requirements
-See requirements.txt for pip requirements, use 'pip install -r requirements.txt' to install requirements using pip.
+See requirements.txt for requirements.
 
-If you don't have pip, use your package manager to install it or use 'easy_install pip'.
+These are the requirements:
 
-* python2 or python3
-* argparse
-* requests
+* python2 >= 2.7 or python3 >= 3.2 (to get argparse in standard library)
+* argparse (should get it by default for above supported python versions)
+* requests (needs to be installed)
+
+### Using pip
+Use `pip install -r requirements.txt` to install requirements using pip.
+
+If you don't have pip, use your package manager to install it or use `easy_install pip`.
+
+### Using packages
+
+You will need the `requests` module. Install the `python-requests` or `python3-requests` package depending on python version.
+
+Use `apt install python-requests` on Debian based and `yum install python-requests` or `dnf` instead of `yum` if you're on Fedora.
 
 ## Installation
 Copy the `openstack_monitoring` folder to your nagios plugins folder, keep the folder structure.
