@@ -3,9 +3,18 @@ Python based monitoring checks for Nagios and all it's forks.
 
 Provides checks for API and service statuses.
 
-Tested on OpenStack Liberty
-
 Any improvements are welcome, feel free to create a pull request.
+
+## OpenStack support
+
+Currently in-use on:
+
+* Mitaka
+
+Was used before on (not currently tested but might work):
+
+* Kilo
+* Liberty
 
 ## Status
 [![Build Status](https://travis-ci.org/crystone/openstack-monitoring.svg?branch=master)](https://travis-ci.org/crystone/openstack-monitoring)
