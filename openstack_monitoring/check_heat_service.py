@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import sys
 import argparse
 
@@ -60,11 +61,11 @@ keystone = KeystoneClient(args.auth_url, args.username, args.password,
                           args.region, args.endpoint)
 
 if keystone is None:
-    print 'CRITICAL: Could not create keystone context'
+    print('CRITICAL: Could not create keystone context')
     sys.exit(STATE_CRITICAL)
 
 if keystone.valid() is False:
-    print 'CRITICAL: Keystone context is invalid'
+    print('CRITICAL: Keystone context is invalid')
     sys.exit(STATE_CRITICAL)
 
 heat_url = None
@@ -75,18 +76,18 @@ if args.heat_url is not None:
 heat = HeatClient(keystone, heat_url)
 
 if heat is None:
-    print 'CRITICAL: Could not create heat context'
+    print('CRITICAL: Could not create heat context')
     sys.exit(STATE_CRITICAL)
 
 service = heat.get_service(args.host, args.binary)
 
 if service is None:
-    print ('CRITICAL: Could not retrieve '
-           'status for %s on %s') % (args.binary, args.host)
+    print(('CRITICAL: Could not retrieve '
+           'status for %s on %s') % (args.binary, args.host))
     sys.exit(STATE_CRITICAL)
 
 if type(service) is not list:
-    print 'CRITICAL: Invalid service list recieved'
+    print('CRITICAL: Invalid service list recieved')
     sys.exit(STATE_CRITICAL)
 
 final_status_code = STATE_OK
@@ -110,11 +111,11 @@ for s in service:
     data.append(text)
 
 if total_critical >= 1:
-    print 'CRITICAL: %s heat-engine is critical' % (total_critical)
+    print('CRITICAL: %s heat-engine is critical' % (total_critical))
 else:
-    print 'OK: %s heat-engine is ok' % (total_ok)
+    print('OK: %s heat-engine is ok' % (total_ok))
 
 for d in data:
-    print d
+    print(d)
 
 sys.exit(final_status_code)

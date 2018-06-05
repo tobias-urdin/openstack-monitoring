@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import sys
 import argparse
 
@@ -56,11 +57,11 @@ keystone = KeystoneClient(args.auth_url, args.username, args.password,
                           args.region, args.endpoint)
 
 if keystone is None:
-    print 'CRITICAL: Could not create keystone context'
+    print('CRITICAL: Could not create keystone context')
     sys.exit(STATE_CRITICAL)
 
 if keystone.valid() is False:
-    print 'CRITICAL: Keystone context is invalid'
+    print('CRITICAL: Keystone context is invalid')
     sys.exit(STATE_CRITICAL)
 
 glance_url = None
@@ -71,24 +72,24 @@ if args.glance_url is not None:
 glance = GlanceClient(keystone, glance_url)
 
 if glance is None:
-    print 'CRITICAL: Could not create glance context'
+    print('CRITICAL: Could not create glance context')
     sys.exit(STATE_CRITICAL)
 
 images = glance.get_images()
 
 if images is None:
-    print 'CRITICAL: Did not get any images data'
+    print('CRITICAL: Did not get any images data')
     sys.exit(STATE_CRITICAL)
 
 if 'images' in images:
     count = len(images['images'])
 
     if count > 0:
-        print 'OK: Found %s images' % (count)
+        print('OK: Found %s images' % (count))
         sys.exit(STATE_OK)
     else:
-        print 'CRITICAL: Did not find any images'
+        print('CRITICAL: Did not find any images')
         sys.exit(STATE_CRITICAL)
 
-print 'CRITICAL: Could not retrieve glance images'
+print('CRITICAL: Could not retrieve glance images')
 sys.exit(STATE_CRITICAL)

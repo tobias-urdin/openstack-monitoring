@@ -36,14 +36,16 @@ The same principle applies for all other checks.
 ## Requirements
 See requirements.txt for pip requirements, use 'pip install -r requirements.txt' to install requirements using pip.
 
-If you don't have pip, use 'easy_install pip' to install pip.
+If you don't have pip, use your package manager to install it or use 'easy_install pip'.
 
-* python >= 2.6
+* python2 or python3
 * argparse
 * requests
 
 ## Installation
-Copy this folder to your nagios plugins folder, keep the folder structure.
+Copy the `openstack_monitoring` folder to your nagios plugins folder, keep the folder structure.
+
+You can find example nagios command defintions in the `contrib` folder.
 
 ## License
 Openstack Monitoring

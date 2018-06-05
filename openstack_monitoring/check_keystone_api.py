@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import sys
 import argparse
 
@@ -53,23 +54,23 @@ keystone = KeystoneClient(args.auth_url, args.username, args.password,
                           args.region, args.endpoint)
 
 if keystone is None:
-    print 'CRITICAL: Could not create keystone context'
+    print('CRITICAL: Could not create keystone context')
     sys.exit(STATE_CRITICAL)
 
 if keystone.valid() is False:
-    print ('CRITICAL: Keystone failed to create token domain %s region %s user %s in '
-    'project %s') % (args.domain, keystone.get_region(), args.username, args.project)
+    print(('CRITICAL: Keystone failed to create token domain %s region %s user %s in '
+    'project %s') % (args.domain, keystone.get_region(), args.username, args.project))
     sys.exit(STATE_CRITICAL)
 
 token = keystone.get_token()
 
 if token is None:
-    print ('CRITICAL: Could not get token for '
+    print(('CRITICAL: Could not get token for '
            'domain %s region %s user % in project %s') % (args.domain, keystone.get_region(),
-                                                args.username, args.project)
+                                                args.username, args.project))
     sys.exit(STATE_CRITICAL)
 
-print ('OK: Successfully created token - domain %s region %s '
+print(('OK: Successfully created token - domain %s region %s '
        'user %s in project %s') % (args.domain, keystone.get_region(),
-                                   args.username, args.project)
+                                   args.username, args.project))
 sys.exit(STATE_OK)

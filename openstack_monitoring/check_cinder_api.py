@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import sys
 import argparse
 
@@ -56,11 +57,11 @@ keystone = KeystoneClient(args.auth_url, args.username, args.password,
                           args.region, args.endpoint)
 
 if keystone is None:
-    print 'CRITICAL: Could not create keystone context'
+    print('CRITICAL: Could not create keystone context')
     sys.exit(STATE_CRITICAL)
 
 if keystone.valid() is False:
-    print 'CRITICAL: Keystone context is invalid'
+    print('CRITICAL: Keystone context is invalid')
     sys.exit(STATE_CRITICAL)
 
 cinder_url = None
@@ -71,24 +72,24 @@ if args.cinder_url is not None:
 cinder = CinderClient(keystone, cinder_url)
 
 if cinder is None:
-    print 'CRITICAL: Could not create cinder context'
+    print('CRITICAL: Could not create cinder context')
     sys.exit(STATE_CRITICAL)
 
 volumes = cinder.get_volumes()
 
 if volumes is None:
-    print 'CRITICAL: Did not get any volumes data'
+    print('CRITICAL: Did not get any volumes data')
     sys.exit(STATE_CRITICAL)
 
 if 'volumes' in volumes:
     count = len(volumes['volumes'])
 
     if count > 0:
-        print 'OK: Found %s volumes' % (count)
+        print('OK: Found %s volumes' % (count))
         sys.exit(STATE_OK)
     else:
-        print 'CRITICAL: Did not find any volumes'
+        print('CRITICAL: Did not find any volumes')
         sys.exit(STATE_CRITICAL)
 
-print 'CRITICAL: Could not retrieve cinder volumes'
+print('CRITICAL: Could not retrieve cinder volumes')
 sys.exit(STATE_CRITICAL)

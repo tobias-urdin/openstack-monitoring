@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import sys
 import argparse
 
@@ -60,11 +61,11 @@ keystone = KeystoneClient(args.auth_url, args.username, args.password,
                           args.region, args.endpoint)
 
 if keystone is None:
-    print 'CRITICAL: Could not create keystone context'
+    print('CRITICAL: Could not create keystone context')
     sys.exit(STATE_CRITICAL)
 
 if keystone.valid() is False:
-    print 'CRITICAL: Keystone context is invalid'
+    print('CRITICAL: Keystone context is invalid')
     sys.exit(STATE_CRITICAL)
 
 nova_url = None
@@ -75,14 +76,14 @@ if args.nova_url is not None:
 nova = NovaClient(keystone, nova_url)
 
 if nova is None:
-    print 'CRITICAL: Could not create nova context'
+    print('CRITICAL: Could not create nova context')
     sys.exit(STATE_CRITICAL)
 
 service = nova.get_service(args.host, args.binary)
 
 if service is None:
-    print ('CRITICAL: Could not retrieve status '
-           'for %s on %s') % (args.binary, args.host)
+    print(('CRITICAL: Could not retrieve status '
+           'for %s on %s') % (args.binary, args.host))
     sys.exit(STATE_CRITICAL)
 
 if service['status'] == 'enabled':
@@ -93,15 +94,15 @@ if service['status'] == 'enabled':
         status = 'OK'
         status_code = STATE_OK
 
-    print ('%s: %s on %s is enabled with '
+    print(('%s: %s on %s is enabled with '
            'state %s') % (status, service['binary'],
-                          service['host'], service['state'])
+                          service['host'], service['state']))
     sys.exit(status_code)
 else:
-        print ('WARNING: %s on %s is disabled with '
+        print(('WARNING: %s on %s is disabled with '
                'state %s') % (service['binary'], service['host'],
-                              service['state'])
+                              service['state']))
         sys.exit(STATE_WARNING)
 
-print ('CRITICAL: Invalid service state for %s on %s' % (args.binary, args.host))
+print('CRITICAL: Invalid service state for %s on %s' % (args.binary, args.host))
 sys.exit(STATE_CRITICAL)

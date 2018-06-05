@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import sys
 import argparse
 
@@ -56,11 +57,11 @@ keystone = KeystoneClient(args.auth_url, args.username, args.password,
                           args.region, args.endpoint)
 
 if keystone is None:
-    print 'CRITICAL: Could not create keystone context'
+    print('CRITICAL: Could not create keystone context')
     sys.exit(STATE_CRITICAL)
 
 if keystone.valid() is False:
-    print 'CRITICAL: Keystone context is invalid'
+    print('CRITICAL: Keystone context is invalid')
     sys.exit(STATE_CRITICAL)
 
 ceilometer_url = None
@@ -71,20 +72,20 @@ if args.ceilometer_url is not None:
 ceilometer = CeilometerClient(keystone, ceilometer_url)
 
 if ceilometer is None:
-    print 'CRITICAL: Could not create ceilometer context'
+    print('CRITICAL: Could not create ceilometer context')
     sys.exit(STATE_CRITICAL)
 
 events = ceilometer.get_events()
 
 if events is None:
-    print 'CRITICAL: Did not get any events data'
+    print('CRITICAL: Did not get any events data')
     sys.exit(STATE_CRITICAL)
 
 count = len(events)
 
 if count >= 0:
-    print 'OK: Found %s events' % (count)
+    print('OK: Found %s events' % (count))
     sys.exit(STATE_OK)
 
-print 'CRITICAL: Could not retrieve ceilometer events'
+print('CRITICAL: Could not retrieve ceilometer events')
 sys.exit(STATE_CRITICAL)

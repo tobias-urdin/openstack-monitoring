@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 import sys
 import argparse
 
@@ -60,11 +61,11 @@ keystone = KeystoneClient(args.auth_url, args.username, args.password,
                           args.region, args.endpoint)
 
 if keystone is None:
-    print 'CRITICAL: Could not create keystone context'
+    print('CRITICAL: Could not create keystone context')
     sys.exit(STATE_CRITICAL)
 
 if keystone.valid() is False:
-    print 'CRITICAL: Keystone context is invalid'
+    print('CRITICAL: Keystone context is invalid')
     sys.exit(STATE_CRITICAL)
 
 neutron_url = None
@@ -75,14 +76,14 @@ if args.neutron_url is not None:
 neutron = NeutronClient(keystone, neutron_url)
 
 if neutron is None:
-    print 'CRITICAL: Could not create neutron context'
+    print('CRITICAL: Could not create neutron context')
     sys.exit(STATE_CRITICAL)
 
 agent = neutron.get_agent(args.host, args.binary)
 
 if agent is None:
-    print ('CRITICAL: Could not retrieve status '
-           'for %s on %s') % (args.binary, args.host)
+    print(('CRITICAL: Could not retrieve status '
+           'for %s on %s') % (args.binary, args.host))
     sys.exit(STATE_CRITICAL)
 
 if agent['admin_state_up'] is True:
@@ -95,13 +96,13 @@ if agent['admin_state_up'] is True:
         status_code = STATE_OK
         state = 'alive'
 
-    print ('%s: %s on %s is enabled with '
-           'state %s') % (status, agent['binary'], agent['host'], state)
+    print(('%s: %s on %s is enabled with '
+           'state %s') % (status, agent['binary'], agent['host'], state))
     sys.exit(status_code)
 else:
-    print ('WARNING: %s on %s is disabled with '
-           'state %s') % (agent['binary'], agent['host'], state)
+    print(('WARNING: %s on %s is disabled with '
+           'state %s') % (agent['binary'], agent['host'], state))
     sys.exit(STATE_WARNING)
 
-print ('CRITICAL: Invalid service state for %s on %s' % (args.binary, args.host))
+print('CRITICAL: Invalid service state for %s on %s' % (args.binary, args.host))
 sys.exit(STATE_CRITICAL)
