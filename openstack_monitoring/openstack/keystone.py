@@ -66,7 +66,7 @@ class TokenRequestV3(object):
 
 class KeystoneClient(object):
     def __init__(self, auth_url, username, password, domain='default', project=None,
-                 ssl=False, region='regionOne', endpoint='internalURL'):
+                 ssl=False, region='regionOne', endpoint='internal'):
         self.auth_url = auth_url
         self.username = username
         self.password = password
@@ -86,7 +86,7 @@ class KeystoneClient(object):
         if endpoint is not None:
             self.endpoint = endpoint
         else:
-            self.endpoint = 'internalURL'
+            self.endpoint = 'internal'
 
         self.headers = {
             'content-type': 'application/json'
@@ -128,16 +128,20 @@ class KeystoneClient(object):
 
         for service in self.catalog:
             if service['type'] == service_type:
-                if self.region is not False:
-                    for regionurls in service['endpoints']:
-                        if 'v3' in self.auth_url:
-                            if regionurls['interface'] == self.endpoint:
-                                return regionurls['url']
+                for regionurls in service['endpoints']:
+                    if 'v3' in self.auth_url:
+                        if regionurls['interface'] == self.endpoint:
+                            return regionurls['url']
+                    else:
+                        if regionurls['region'].lower() == self.region.lower():
+                            for key, val in regionurls.items():
+                                if self.endpoint in key:
+                                    return val
                         else:
-                            if regionurls['region'].lower() == self.region.lower():
-                                return regionurls[self.endpoint]
-                            else:
-                                return service['endpoints'][0][self.endpoint]
+                            for i in service['endpoints']:
+                                for key, val in i.items():
+                                    if self.endpoint in key:
+                                        return val
 
         return None
 

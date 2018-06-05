@@ -43,8 +43,8 @@ parser.add_argument('--region', metavar='region', type=str,
                     required=True, help='Region')
 parser.add_argument('--insecure', action='store_false', dest='verify',
                     required=False, help='Disable SSL')
-parser.add_argument('--endpoint', metavar='publicURL', type=str,
-                    required=False, help='Endpoint type, default to publicURL')
+parser.add_argument('--endpoint', metavar='public', type=str,
+                    required=False, help='Endpoint type, default to public')
 
 args = parser.parse_args()
 

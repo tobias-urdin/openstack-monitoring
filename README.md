@@ -29,6 +29,8 @@ Supports both keystone v2.0 and v3 auth, it's selected based on the --auth_url p
 
 Domain defaults to `default` and region defaults to `regionOne` all other is mandatory. For keystone v3 the `--project` parameter is required but not used because it does not create a scoped token.
 
+The default `--endpoint` type is set to *public* to support newer OpenStack versions (and keystone v3 catalogs). To support backwards compatibility this will also match *publicURL* etc when using keystone v2.0
+
 The same principle applies for all other checks.
 
 ## Requirements

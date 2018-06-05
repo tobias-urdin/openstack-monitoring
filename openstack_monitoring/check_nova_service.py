@@ -46,8 +46,8 @@ parser.add_argument('--nova_url', metavar='http://controller:8774/v2',
                     type=str, required=False, help='Nova endpoint')
 parser.add_argument('--insecure', action='store_false', dest='verify',
                     required=False, help='Disable SSL')
-parser.add_argument('--endpoint', metavar='publicURL', type=str,
-                    required=False, help='Endpoint type, default to publicURL')
+parser.add_argument('--endpoint', metavar='public', type=str,
+                    required=False, help='Endpoint type, default to public')
 parser.add_argument('--host', metavar='host', type=str, required=True,
                     help='Host to check binary on')
 parser.add_argument('--binary', metavar='binary', type=str, required=True,
